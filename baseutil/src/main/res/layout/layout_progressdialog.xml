@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="110dp"
+    android:layout_height="110dp">
+
+    <com.github.lzyzsd.circleprogress.DonutProgress
+        android:id="@+id/donutprogress"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp28"
+        app:donut_finished_color="#0066FF"
+        app:donut_finished_stroke_width="@dimen/dp2"
+        app:donut_show_text="false"
+        app:donut_text_size="@dimen/dp12"
+        app:donut_unfinished_color="#ffbdbdbd"
+        app:donut_unfinished_stroke_width="@dimen/dp2" />
+
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dp15"
+        android:text="上传中..."
+        android:textSize="@dimen/dp12"/>
+</RelativeLayout>
