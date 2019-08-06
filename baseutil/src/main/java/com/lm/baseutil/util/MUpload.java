@@ -10,6 +10,7 @@ import com.lm.baseutil.http.JsonCallback;
 import com.lm.baseutil.inter.IUpload;
 import com.lm.baseutil.upload.UploadCallBack;
 import com.lm.baseutil.view.CircleProgerssDialog;
+import com.luck.picture.lib.compress.Luban;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Progress;
 import com.lzy.okgo.model.Response;
@@ -29,7 +30,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import top.zibin.luban.Luban;
+
 
 
 /**

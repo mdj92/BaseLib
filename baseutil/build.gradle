@@ -34,6 +34,9 @@ dependencies {
 
     api "com.android.support:appcompat-v7:${supportLibVersion}"
     api "com.android.support:design:${supportLibVersion}"
+    api "com.android.support:recyclerview-v7:${supportLibVersion}"
+
+
 
     api 'com.android.support:multidex:1.0.3'
     api 'org.greenrobot:eventbus:3.1.1'
@@ -61,17 +64,22 @@ dependencies {
     api 'com.daimajia.androidanimations:library:2.3@aar'
 
     //rxjava2
-    api 'io.reactivex.rxjava2:rxjava:2.2.1'
+    api 'io.reactivex.rxjava2:rxjava:2.2.6'
     api 'io.reactivex.rxjava2:rxandroid:2.1.0'
     //Luban图片压缩
-    api 'top.zibin:Luban:1.1.8'
+//    api 'top.zibin:Luban:1.1.8'
     //Glide
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    api 'com.github.bumptech.glide:glide:4.5.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.5.0'
 
     api 'com.daimajia.numberprogressbar:library:1.4@aar'
     //dialog
     api 'com.github.lzyzsd:circleprogress:1.2.1'
+
+//    //图片选择库
+    api 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.42'
+
 }
 
 //执行命令：gradlew clean build bintrayUpload -PbintrayUser=mdj92 -PbintrayKey=2a32a7667e8806d4e20c5d92842fab0c7612d413 -PdryRun=false
@@ -80,7 +88,7 @@ publish {
     userOrg = 'mdj92'      //bintray注册的用户名
     groupId = 'com.mdj92'         //jcenter上的路径 -compile引用时的第1部分groupId
     artifactId = 'BaseLib'     //自己的maven上添加的包名-compile引用时的第2部分项目名
-    publishVersion = '1.0.0'    //compile引用时的第3部分版本号
+    publishVersion = '1.0.1'    //compile引用时的第3部分版本号
     desc = 'desc'
     website = 'https://github.com/mdj92/BaseLib'
 }

@@ -37,4 +37,6 @@ dependencies {
 
     //基础类
     implementation project(path: ':baseutil')
+
+
 }
