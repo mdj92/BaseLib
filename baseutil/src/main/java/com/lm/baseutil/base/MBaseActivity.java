@@ -22,21 +22,18 @@ public abstract class MBaseActivity extends AppCompatActivity implements IBaseAc
         super.onCreate(savedInstanceState);
         setContentView(bindLayout());
         bindButterKnife();
+        EventBus.getDefault().register(this);
         init();
         initView();
         loadData();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
+
 
     @Override
     protected void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
+
     }
 
     @Override
@@ -52,6 +49,7 @@ public abstract class MBaseActivity extends AppCompatActivity implements IBaseAc
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         unbindButterknife();
     }
 
