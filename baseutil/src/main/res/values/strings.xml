@@ -10,6 +10,7 @@
     <string name="error_response_code_dex">服务器响应码%1$d，如果你们服务器在这种情况下也返回数据你可以处理。</string>
     <string name="error_gif">x or y bound size should be at least %1$dpx and file size should be no more than %2$sM</string>
     <string name="error_compress">压缩失败,请重试。</string>
+    <string name="error_json">数据解析异常！</string>
     <!-- Download error -->
     <string name="download_error">下载出错了：%1$s</string>
     <string name="download_error_server">服务器数据错误！</string>
