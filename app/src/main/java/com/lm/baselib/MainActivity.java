@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 
 import com.lm.baselib.base.BaseActivity;
 import com.lm.baselib.constan.Constants;
@@ -20,6 +20,7 @@ import com.lm.baseutil.http.Result;
 import com.lm.baseutil.util.MDownLoad;
 import com.lm.baseutil.util.MToast;
 import com.lm.baseutil.util.MUpdate;
+import com.lm.baseutil.util.ParseJsonUtil;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -29,6 +30,8 @@ import com.luck.picture.lib.tools.PictureFileUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 
+
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +39,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 public class MainActivity extends BaseActivity {
@@ -50,6 +51,7 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.mReclclerview)
     RecyclerView mReclclerview;
 
+
     private ImageAdapter mAdapter;
     private List<LocalMedia> selectList = new ArrayList<>();
 
@@ -60,8 +62,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        mReclclerview.setLayoutManager(new GridLayoutManager(this,4));
-        mAdapter=new ImageAdapter(selectList,9);
+        mReclclerview.setLayoutManager(new GridLayoutManager(this, 4));
+        mAdapter = new ImageAdapter(selectList, 9);
         mReclclerview.setAdapter(mAdapter);
 
     }
@@ -73,7 +75,7 @@ public class MainActivity extends BaseActivity {
 
 
     @SuppressLint("CheckResult")
-    private void clearImgFile(){
+    private void clearImgFile() {
         // 清空图片缓存，包括裁剪、压缩后的图片 注意:必须要在上传完成后调用 必须要获取权限
         RxPermissions permissions = new RxPermissions(this);
         permissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Consumer<Boolean>() {
@@ -93,38 +95,37 @@ public class MainActivity extends BaseActivity {
     private ImageAdapter.onAddPicClickListener onAddPicClickListener = new ImageAdapter.onAddPicClickListener() {
         @Override
         public void onAddPicClick() {
-                // 进入相册 以下是例子：不需要的api可以不写
-                PictureSelector.create(MainActivity.this)
-                        .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
-                        .theme(R.style.picture_default_style)// 主题样式设置 具体参考 values/styles   用法：R.style.picture.white.style
-                        .maxSelectNum(3)// 最大图片选择数量
-                        .minSelectNum(1)// 最小选择数量
-                        .imageSpanCount(4)// 每行显示个数
-                        .selectionMode(PictureConfig.MULTIPLE )// 多选 or 单选
-                        .previewImage(true)// 是否可预览图片
-                        .previewVideo(false)// 是否可预览视频
-                        .enablePreviewAudio(false) // 是否可播放音频
-                        .isCamera(true)// 是否显示拍照按钮
-                        .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
-                        .enableCrop(false)// 是否裁剪
-                        .compress(false)// 是否压缩
-                        .synOrAsy(true)//同步true或异步false 压缩 默认同步
-                        .glideOverride(160, 160)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
-                        .withAspectRatio(0, 0)// 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
-                        .hideBottomControls(false)// 是否显示uCrop工具栏，默认不显示
-                        .isGif(false)// 是否显示gif图片
-                        .freeStyleCropEnabled(true)// 裁剪框是否可拖拽
-                        .circleDimmedLayer(false)// 是否圆形裁剪
-                        .showCropFrame(false)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false
-                        .showCropGrid(false)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false
-                        .openClickSound(false)// 是否开启点击声音
-                        .selectionMedia(selectList)// 是否传入已选图片
-                        .minimumCompressSize(100)// 小于100kb的图片不压缩
-                        .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
+            // 进入相册 以下是例子：不需要的api可以不写
+            PictureSelector.create(MainActivity.this)
+                    .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
+                    .theme(R.style.picture_default_style)// 主题样式设置 具体参考 values/styles   用法：R.style.picture.white.style
+                    .maxSelectNum(3)// 最大图片选择数量
+                    .minSelectNum(1)// 最小选择数量
+                    .imageSpanCount(4)// 每行显示个数
+                    .selectionMode(PictureConfig.MULTIPLE)// 多选 or 单选
+                    .previewImage(true)// 是否可预览图片
+                    .previewVideo(false)// 是否可预览视频
+                    .enablePreviewAudio(false) // 是否可播放音频
+                    .isCamera(true)// 是否显示拍照按钮
+                    .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
+                    .enableCrop(false)// 是否裁剪
+                    .compress(false)// 是否压缩
+                    .synOrAsy(true)//同步true或异步false 压缩 默认同步
+                    .glideOverride(160, 160)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
+                    .withAspectRatio(0, 0)// 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
+                    .hideBottomControls(false)// 是否显示uCrop工具栏，默认不显示
+                    .isGif(false)// 是否显示gif图片
+                    .freeStyleCropEnabled(true)// 裁剪框是否可拖拽
+                    .circleDimmedLayer(false)// 是否圆形裁剪
+                    .showCropFrame(false)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false
+                    .showCropGrid(false)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false
+                    .openClickSound(false)// 是否开启点击声音
+                    .selectionMedia(selectList)// 是否传入已选图片
+                    .minimumCompressSize(100)// 小于100kb的图片不压缩
+                    .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
         }
 
     };
-
 
 
     @Override
@@ -148,8 +149,21 @@ public class MainActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.login:
 //                doLogin("ls", "123456");
-                getData();
+//                getData();
+//                requestQrCodeData();
+                getHasRegion();
 
+                PjInfoBean bean = new PjInfoBean();
+                bean.setIfRev("1");
+                bean.setIsAnonymity("0");
+                bean.setNorms("505");
+                bean.setOnlineRevInfo("");
+                bean.setQueueId("6225");
+                bean.setRevId("非常满意");
+                bean.setStarLevel("5");
+                String json = ParseJsonUtil.toJson(bean);
+
+//                updateEvaluateAndNorms(json);
                 break;
             case R.id.update:
                 doUpdate();
@@ -158,6 +172,74 @@ public class MainActivity extends BaseActivity {
                 break;
             default:
         }
+    }
+
+
+    List<HasRegionList> mRList = new ArrayList<>();
+
+    private void getHasRegion() {
+        OkGo.<Result<Object>>post("http://111.75.240.74:8888/zndt-v3/api/" + "region/getHasHallRegionList")
+                .execute(new MCallBack<Result<Object>>(this) {
+                    @Override
+                    public void onSuccess(Response<Result<Object>> response) {
+                        Result<Object> mResult = response.body();
+//                        mRList = mResult.date;
+
+//                        Log.w("aaaa")
+
+
+                        if (mResult.isSuccess()) {
+
+//                            if (mRList > 0) {
+//                                setupDefault();
+//                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<Result<Object>> response) {
+                        super.onError(response);
+                        MToast.showToast(MainActivity.this, "数据获取失败,请重试！");
+                    }
+                });
+
+        OkGo.<MResult<HasRegionList>>post("http://111.75.240.74:8888/zndt-v3/api/region/getHasHallRegionList")
+                .execute(new MCallBack<MResult<HasRegionList>>(this) {
+                    @Override
+                    public void onSuccess(Response<MResult<HasRegionList>> response) {
+                        MResult<HasRegionList> mResult = response.body();
+                    }
+
+                    @Override
+                    public void onError(Response<MResult<HasRegionList>> response) {
+                        super.onError(response);
+                        MToast.showToast(MainActivity.this, "数据获取失败,请重试！");
+                    }
+                });
+    }
+
+
+
+
+    private void updateEvaluateAndNorms(String dataJson) {
+        OkGo.<MResult<String>>post("http://218.64.215.237:80/zndt-v3/api/updateEvaluateAndNorms")
+                .upJson(dataJson)
+                .execute(new MCallBack<MResult<String>>(this, false) {
+                    @Override
+                    public void onSuccess(Response<MResult<String>> response) {
+                        MResult mResult = response.body();
+                        if (mResult.isSuccess()) {
+                            MToast.showToast(MainActivity.this, mResult.msg);
+                        } else {
+                            MToast.showToast(MainActivity.this, mResult.msg);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<MResult<String>> response) {
+                        super.onError(response);
+                    }
+                });
     }
 
     private void doDownloadFile() {
@@ -220,34 +302,53 @@ public class MainActivity extends BaseActivity {
                 });
     }
 
-    private void getData() {
-        OkGo.<Result<List<WindowInfo>>>post("http://172.30.1.24:8888/zndt-v3/api/" + "getWindowInfo")
-                .execute(new MCallBack<Result<List<WindowInfo>>>(this) {
+
+    /**
+     * 通过queueid请求接口获取评价器二维码图片
+     */
+    private void requestQrCodeData() {
+        OkGo.<MResult<String>>get("http://wsjh.ganzhou.gov.cn/zndt-v3/api/getEvaluateQrCode")
+                .params("queueId", "22659")
+                .execute(new MCallBack<MResult<String>>(this, false) {
                     @Override
-                    public void onSuccess(Response<Result<List<WindowInfo>>> response) {
-                        Result<List<WindowInfo>> mResult = response.body();
+                    public void onSuccess(Response<MResult<String>> response) {
+                        MResult<String> mResult = response.body();
                         if (mResult.isSuccess()) {
-                            if (mResult.date == null) return;
-                            for (int i = 0; i < mResult.date.size(); i++) {
-
-                            }
-
+//                            MGlide.baseLoad(mContext, mResult.data, imgQR);
                         }
                     }
 
                     @Override
-                    public void onError(Response<Result<List<WindowInfo>>> response) {
+                    public void onError(Response<MResult<String>> response) {
                         super.onError(response);
-                        MToast.showToast(MainActivity.this, "数据获取失败,请重试！");
-
                     }
                 });
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+
+    private void getData() {
+//        OkGo.<Result<List<WindowInfo>>>post("http://172.30.1.24:8888/zndt-v3/api/" + "getWindowInfo")
+//                .execute(new MCallBack<Result<List<WindowInfo>>>(this) {
+//                    @Override
+//                    public void onSuccess(Response<Result<List<WindowInfo>>> response) {
+//                        Result<List<WindowInfo>> mResult = response.body();
+//                        if (mResult.isSuccess()) {
+//                            if (mResult.date == null) return;
+//                            for (int i = 0; i < mResult.date.size(); i++) {
+//
+//                            }
+//
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(Response<Result<List<WindowInfo>>> response) {
+//                        super.onError(response);
+//                        MToast.showToast(MainActivity.this, "数据获取失败,请重试！");
+//
+//                    }
+//                });
     }
+
+
 }

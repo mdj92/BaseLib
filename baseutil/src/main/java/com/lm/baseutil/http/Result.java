@@ -1,5 +1,7 @@
 package com.lm.baseutil.http;
 
+import com.lm.baseutil.config.BaseModule;
+
 /**
  * @author
  * @description
@@ -11,10 +13,10 @@ public class Result <T>{
 
     public String msg;
 
-    public T date;
+    public T data;
 
     public boolean isSuccess() {
-        return code==200 || code==0;
+        return code == BaseModule.getMbaseModuleConfig().getServerSuccessCode();
     }
 
 

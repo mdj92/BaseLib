@@ -4,11 +4,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.Window;
 import android.widget.TextView;
 
 
 import com.lm.baseutil.R;
+import com.lm.baseutil.config.BaseModule;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import net.frakbot.jumpingbeans.JumpingBeans;
@@ -58,12 +60,12 @@ public class LoadingDialog extends Dialog {
         view = findViewById(R.id.avi);
         info_tv = findViewById(R.id.info);
         view.setIndicator(name);
-//        if (BaseModule.getMbaseModuleConfig().getDialogColor() != -1) {
-//            view.setIndicatorColor(ContextCompat.getColor(mContext, BaseModule.getMbaseModuleConfig().getDialogColor()));
-//        } else {
-//            view.setIndicatorColor(Color.BLUE);
-//        }
-        view.setIndicatorColor(Color.BLUE);
+        if (BaseModule.getMbaseModuleConfig().getDialogColor() != -1) {
+            view.setIndicatorColor(ContextCompat.getColor(mContext, BaseModule.getMbaseModuleConfig().getDialogColor()));
+        } else {
+            view.setIndicatorColor(Color.BLUE);
+        }
+//        view.setIndicatorColor(Color.BLUE);
 
         if (info != null) {
             info_tv.setText(info);
@@ -76,5 +78,11 @@ public class LoadingDialog extends Dialog {
                     .build();
         }
         setCanceledOnTouchOutside(false);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (bean != null) bean.stopJumping();
     }
 }

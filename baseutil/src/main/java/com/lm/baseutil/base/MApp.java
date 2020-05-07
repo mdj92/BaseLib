@@ -11,10 +11,12 @@ import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 
 /**
@@ -55,9 +57,14 @@ public abstract class MApp extends MultiDexApplication {
             }
             builder.addCommonParams(httpParams);
         }
-
+        List<Interceptor> interceptors = config.getInterceptors();
         OkHttpClient.Builder clinet=new OkHttpClient.Builder();
         clinet.addInterceptor(loggingInterceptor());
+        if (interceptors != null && !interceptors.isEmpty()) {
+            for (Interceptor interceptor : interceptors) {
+                clinet.addInterceptor(interceptor);
+            }
+        }
         //默认使用OkGo的超时时间就是60秒，如果你想改，可以自己设置
         //全局的读取超时时间
         clinet.readTimeout(config.getmReadTimeout(),TimeUnit.SECONDS);

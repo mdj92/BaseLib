@@ -88,7 +88,7 @@ publish {
     userOrg = 'mdj92'      //bintray注册的用户名
     groupId = 'com.mdj92'         //jcenter上的路径 -compile引用时的第1部分groupId
     artifactId = 'BaseLib'     //自己的maven上添加的包名-compile引用时的第2部分项目名
-    publishVersion = '1.0.2'    //compile引用时的第3部分版本号
+    publishVersion = '1.0.3'    //compile引用时的第3部分版本号
     desc = 'desc'
     website = 'https://github.com/mdj92/BaseLib'
 }
